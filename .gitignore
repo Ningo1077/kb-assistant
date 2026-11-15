@@ -1,0 +1,71 @@
+# ================= Python =================
+backend/.venv/
+backend/.pgvector-src/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# ================= 本地配置与密钥 =================
+backend/.env
+backend/.env.local
+*.pem
+*.key
+
+# ================= 运行时数据（数据库 / 上传文件） =================
+backend/data/*
+!backend/data/.gitkeep
+backup-installed-data/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# ================= Node / 前端 =================
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ================= Rust / Tauri =================
+src-tauri/target/
+src-tauri/gen/schemas/
+*.pdb
+
+# ================= 构建产物 =================
+dist/
+bundle/
+*.exe
+*.msi
+*.msix
+*.app
+*.dmg
+
+# ================= 编辑器 / 系统 =================
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ================= 本机备份 / 隐私文件 =================
+# 这些文件常含本机配置、账号或聊天数据，绝不入库
+*.bak
+*.orig
+*.rej
+*.lnk
+.env.*.bak
+.workbuddy/
+
+# ================= 临时文件 =================
+*.log
+*.tmp
+.tmp/
+
