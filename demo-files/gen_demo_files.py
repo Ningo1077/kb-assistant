@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""生成答辩演示用的 5 类文档：PDF / DOCX / MD / TXT / CSV
+"""生成演示用的 5 类文档：PDF / DOCX / MD / TXT / CSV
 主题统一为「云澜科技」公司资料包，内容埋入可提问的具体数字与条款。
 """
 import csv

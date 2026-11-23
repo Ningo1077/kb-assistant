@@ -348,7 +348,7 @@ class TestApiFlow(unittest.TestCase):
 
     def test_08_kb_crud(self):
         r = self.client.post(
-            "/api/kbs", json={"name": "结课答辩演示库", "description": "自动化测试"}, headers=self.headers
+            "/api/kbs", json={"name": "演示知识库", "description": "自动化测试"}, headers=self.headers
         )
         self.assertEqual(r.status_code, 201, r.text)
         self.__class__.kb_id = r.json()["id"]
@@ -357,7 +357,7 @@ class TestApiFlow(unittest.TestCase):
         self.assertTrue(any(k["id"] == self.kb_id for k in listed.json()))
         detail = self.client.get(f"/api/kbs/{self.kb_id}", headers=self.headers)
         self.assertEqual(detail.status_code, 200)
-        self.assertEqual(detail.json()["name"], "结课答辩演示库")
+        self.assertEqual(detail.json()["name"], "演示知识库")
 
     def test_09_upload_and_ingest(self):
         files = {"file": ("系统设计说明.md", SAMPLE_MD.encode("utf-8"), "text/markdown")}

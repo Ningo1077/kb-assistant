@@ -58,7 +58,6 @@ SOURCES: list[tuple[str, str, str]] = [
     ("docs/03-测试报告.md", "03-测试报告.docx", "测试报告"),
     ("docs/04-部署手册.md", "04-部署手册.docx", "部署手册"),
     ("docs/05-使用说明书.md", "05-使用说明书.docx", "使用说明书"),
-    ("docs/06-答辩演示脚本.md", "06-答辩演示脚本.docx", "答辩演示脚本"),
     ("docs/技术选型与需求分析.md", "技术选型与需求分析.docx", "需求分析（完整版）"),
     ("docs/技术选型与需求分析-精简版.md", "技术选型与需求分析-精简版.docx", "需求分析（精简版）"),
     ("docs/作业要求对照-技术选型与需求分析填写稿.md", "作业要求对照-技术选型与需求分析填写稿.docx", "作业对照填写稿"),
@@ -564,7 +563,7 @@ class Converter:
         info.alignment = WD_TABLE_ALIGNMENT.CENTER
         info.autofit = True
         labels = [
-            ("项目", "kb-assistant · 课程结课答辩项目（个人作品）"),
+            ("项目", "kb-assistant · 私有文档知识库问答助手（个人作品）"),
             ("版本", "v1.0.0"),
             ("编制日期", dt.date.today().isoformat()),
             ("源文件", src_rel + "（Markdown 可编辑源文件）"),
@@ -626,7 +625,7 @@ class Converter:
         self.setup_styles(doc)
         self.setup_page(doc, self.out_name.replace(".docx", ""))
         doc.core_properties.title = doc_title
-        doc.core_properties.subject = "kb-assistant 课程结课答辩交付文档"
+        doc.core_properties.subject = "kb-assistant 项目交付文档"
         doc.core_properties.author = "Ningo1077"
         doc.core_properties.keywords = "kb-assistant; RAG; 交付文档; " + doc_type
         doc.core_properties.comments = "由 " + self.src_rel + " 自动转换，正文未改写"

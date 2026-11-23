@@ -56,7 +56,7 @@ def main() -> int:
     print("      ", health.json())
 
     print("[2/7] 注册")
-    reg = client.post("/api/auth/register", json={"email": email, "password": "test123456", "display_name": "答辩演示账号"})
+    reg = client.post("/api/auth/register", json={"email": email, "password": "test123456", "display_name": "演示账号"})
     assert reg.status_code == 201, reg.text
     token = reg.json()["access_token"]
 
@@ -66,7 +66,7 @@ def main() -> int:
     headers = {"Authorization": f"Bearer {login.json()['access_token']}"}
 
     print("[4/7] 创建知识库")
-    kb = client.post("/api/kbs", json={"name": "智能家居资料", "description": "结课答辩演示库"}, headers=headers)
+    kb = client.post("/api/kbs", json={"name": "智能家居资料", "description": "演示知识库"}, headers=headers)
     assert kb.status_code == 201, kb.text
     kb_id = kb.json()["id"]
 

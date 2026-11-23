@@ -7,7 +7,7 @@
 [![Tauri](https://img.shields.io/badge/Tauri-v2-24C8DB.svg)](src-tauri/tauri.conf.json)
 [![Tests](https://img.shields.io/badge/tests-39%20passed-brightgreen.svg)](backend/tests/test_all.py)
 
-课程结课答辩项目（个人作品）。给个人/小团队使用的私有文档问答系统：把 PDF / Word / Markdown 导进知识库，
+课程结课项目（个人作品）。给个人/小团队使用的私有文档问答系统：把 PDF / Word / Markdown 导进知识库，
 用自然语言提问，答案必须标注出自哪份文件第几页。
 
 > `demo-files/` 下的 PDF / DOCX / CSV / TXT 均由 `demo-files/gen_demo_files.py` 生成，
@@ -15,9 +15,9 @@
 
 ## 交付文档：Word 统一版（正式提交格式）
 
-> 课程作业要求**交付文档统一为 Word 格式**。共 **13 份** `.docx` 集中在 [`docs/word/`](docs/word/)：12 份由 Markdown 转换，1 份为逐字收录源码的《源代码文档》。
+> 课程作业要求**交付文档统一为 Word 格式**。共 **12 份** `.docx` 集中在 [`docs/word/`](docs/word/)：11 份由 Markdown 转换，1 份为逐字收录源码的《源代码文档》。
 > 统一封面、目录、页眉/页脚页码；文档版保留标题层级、表格、代码块、引用、任务清单与超链接，正文与 Markdown 源文件逐字一致；
-> 源代码版收录 52 个文件 / 6122 行，带 4 位文件内行号，**每页最多 50 行代码**。
+> 源代码版收录 52 个文件 / 6121 行，带 4 位文件内行号，**每页最多 50 行代码**。
 > `docs/*.md` 与两份 `README.md` 保留为**可编辑源文件**，便于版本管理与后续修订。
 
 **入口：[`docs/word/00-交付物清单与全过程索引.docx`](docs/word/00-交付物清单与全过程索引.docx)** —— 逐项审计结论、阶段门禁、开发时间线、待校准项与提交打包建议。
@@ -31,14 +31,13 @@
 | 测试 | [`03-测试报告.docx`](docs/word/03-测试报告.docx) |
 | 部署 | [`04-部署手册.docx`](docs/word/04-部署手册.docx) |
 | 使用 | [`05-使用说明书.docx`](docs/word/05-使用说明书.docx) |
-| 演示脚本 | [`06-答辩演示脚本.docx`](docs/word/06-答辩演示脚本.docx) |
-| **源代码** | [`07-源代码文档.docx`](docs/word/07-源代码文档.docx)（52 文件 / 6122 行 / 123 代码页 / 每页 ≤ 50 行 / 带行号与文件目录） |
+| **源代码** | [`07-源代码文档.docx`](docs/word/07-源代码文档.docx)（52 文件 / 6121 行 / 123 代码页 / 每页 ≤ 50 行 / 带行号与文件目录） |
 | 项目/后端说明 | [`README-项目总览.docx`](docs/word/README-项目总览.docx) · [`README-后端说明.docx`](docs/word/README-后端说明.docx) |
 
 生成与校验（依赖 `python-docx`，已在本机 `backend/.venv` 中）：
 
 ```bash
-backend/.venv/Scripts/python.exe scripts/md_to_docx.py              # 由 md 源文件重新生成 12 份 docx
+backend/.venv/Scripts/python.exe scripts/md_to_docx.py              # 由 md 源文件重新生成 11 份 docx
 backend/.venv/Scripts/python.exe scripts/md_to_docx.py --check      # 回读校验：标题/表格/代码块/正文逐行覆盖
 backend/.venv/Scripts/python.exe scripts/source_to_docx.py           # 由 52 个源码文件汇编《源代码文档》
 backend/.venv/Scripts/python.exe scripts/source_to_docx.py --check   # 逐行一致 + 每页行数 + 页高估算校验
@@ -59,7 +58,7 @@ backend/.venv/Scripts/python.exe scripts/source_to_docx.py --check   # 逐行一
 | 测试 | [`测试报告`](docs/03-测试报告.md) · [`39 个自动化用例`](backend/tests/test_all.py) · [`七份执行证据`](docs/evidence/) |
 | 部署 | [`部署手册`](docs/04-部署手册.md)（环境 / 配置 / 三种形态 / 备份回滚 / 验收 / 排障） |
 | 使用 | [`使用说明书`](docs/05-使用说明书.md)（面向最终用户 + FAQ） |
-| 演示与归档 | [`答辩演示脚本`](docs/06-答辩演示脚本.md) · [`全过程索引`](docs/00-交付物清单与全过程索引.md) |
+| 归档 | [`全过程索引`](docs/00-交付物清单与全过程索引.md) |
 
 > 提交前请看一下 `docs/word/00-交付物清单与全过程索引.docx` 第七节：其中列了 3 处文档口径不一致（编程语言数、全局快捷键、接口数量）与若干非阻断遗留项，建议统一后再交。
 
@@ -81,7 +80,7 @@ kb-assistant/
 ├── src-tauri/    Tauri v2 桌面客户端（Rust）+ NSIS 安装/卸载脚本
 ├── demo-files/   虚构的演示文档与生成脚本
 ├── docs/         交付文档（Markdown 可编辑源文件）
-│   ├── word/        **Word 正式交付版（13 份 .docx，统一封面/目录/页码）**
+│   ├── word/        **Word 正式交付版（12 份 .docx，统一封面/目录/页码）**
 │   ├── prototype/   可点击高保真 UI 原型（index.html）
 │   └── evidence/    冒烟 / 自动化 / 构建 / 格式转换 / 源码汇编的执行日志（7 份）
 ├── .github/      CI 流水线 + issue / PR 模板 + dependabot
@@ -107,10 +106,8 @@ kb-assistant/
 - [x] 卸载：询问是否保留知识库数据，按安装路径精确结束进程并备份
 - [x] 打包数据隔离：安装包不携带开发机的 `.env`、数据库、上传文档与备份文件
 - [x] 交付材料：需求分析 / 设计与原型 / 代码 / 测试报告与证据 / 部署手册 / 使用说明书 / 全过程索引
-- [x] 答辩演示脚本与现场验收清单（`docs/06-答辩演示脚本.md`）
-- [x] 交付文档统一为 Word 格式：`docs/word/` 下 13 份 `.docx`（封面 / 目录 / 页眉页码，自动转换 + 回读校验）
-- [x] 源代码文档：52 个文件 / 6122 行逐字收录，带行号，每页 ≤ 50 行代码（`docs/word/07-源代码文档.docx`）
-- [ ] 答辩 PPT
+- [x] 交付文档统一为 Word 格式：`docs/word/` 下 12 份 `.docx`（封面 / 目录 / 页眉页码，自动转换 + 回读校验）
+- [x] 源代码文档：52 个文件 / 6121 行逐字收录，带行号，每页 ≤ 50 行代码（`docs/word/07-源代码文档.docx`）
 
 ## 从零开始（clone 后第一步）
 
