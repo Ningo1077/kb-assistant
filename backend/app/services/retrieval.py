@@ -60,16 +60,28 @@ def _vector_search(db: Session, kb_id: int, qvec: list[float], k: int) -> list[t
 
 
 def _terms(query: str) -> list[str]:
-    terms: set[str] = set()
+    """提取检索词：英文/数字整体保留，中文切 bigram。
+
+    必须按出现顺序稳定输出：旧实现用 set + 按长度排序，长度相同的 bigram
+    顺序随哈希种子变化，导致同一问题在不同进程里命中的关键词不同，
+    关键词召回通道时灵时不灵。这里改为去重后保序，并让型号类拉丁词优先。
+    """
+    terms: list[str] = []
+    seen: set[str] = set()
     for run in re.findall(r"[\u4e00-\u9fff]+|[A-Za-z0-9_]+", query):
         if re.fullmatch(r"[A-Za-z0-9_]+", run):
-            if len(run) >= 2:
-                terms.add(run.lower())
+            candidates = [run.lower()] if len(run) >= 2 else []
         elif len(run) == 1:
-            terms.add(run)
+            candidates = [run]
         else:
-            terms.update(run[i : i + 2] for i in range(len(run) - 1))
-    return sorted(terms, key=len, reverse=True)[:6]
+            candidates = [run[i : i + 2] for i in range(len(run) - 1)]
+        for term in candidates:
+            if term not in seen:
+                seen.add(term)
+                terms.append(term)
+    # list.sort 是稳定排序：组内仍保持出现顺序，结果跨进程可复现
+    terms.sort(key=lambda t: 0 if re.fullmatch(r"[a-z0-9_]+", t) else 1)
+    return terms[:6]
 
 
 def _keyword_search(db: Session, kb_id: int, query: str, k: int) -> list[tuple[Chunk, float]]:

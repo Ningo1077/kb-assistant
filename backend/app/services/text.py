@@ -9,7 +9,11 @@ MAX_FILE_BYTES = 20 * 1024 * 1024
 
 _SENT_SPLIT = re.compile(r"(?<=[。！？；!?;\n])")
 _PAGE_NO = re.compile(r"^[-—\s]*\d{1,4}[-—\s]*$")
-_PAGE_LABEL = re.compile(r"^第\s*\d+\s*页(\s*[/／共]?\s*\d*\s*页?)?$")
+# 页脚常见形态：「第 3 页」「第 3 页 / 共 20 页」「3 / 20」「第 3 页 共 20 页」
+_PAGE_LABEL = re.compile(
+    r"^第\s*\d+\s*页(?:\s*[/／]?\s*(?:共|总)?\s*\d*\s*页?)?$"
+    r"|^\d+\s*[/／]\s*\d+\s*页?$"
+)
 _BULLET = re.compile(r"^([一二三四五六七八九十]+[、.]|\d+[.、)]|[（(]\d+[）)]|[-*•]|#+)")
 _CJK = re.compile(r"[\u4e00-\u9fff]")
 

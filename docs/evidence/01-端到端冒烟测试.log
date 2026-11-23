@@ -1,0 +1,27 @@
+D:\作品集\AI知识库问答助手\kb-assistant\backend\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+2026-11-17 19:36:51,023 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 200 OK"
+2026-11-17 19:36:51,094 INFO httpx - HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 201 Created"
+2026-11-17 19:36:51,141 INFO httpx - HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 200 OK"
+2026-11-17 19:36:51,162 INFO httpx - HTTP Request: POST http://testserver/api/kbs "HTTP/1.1 201 Created"
+2026-11-17 19:36:51,197 INFO httpx - HTTP Request: POST http://testserver/api/kbs/1/documents "HTTP/1.1 201 Created"
+2026-11-17 19:36:51,226 INFO app.services.ingest - 入库完成 doc=1 chunks=1
+2026-11-17 19:36:51,233 INFO httpx - HTTP Request: GET http://testserver/api/kbs/1/documents/1 "HTTP/1.1 200 OK"
+2026-11-17 19:36:51,315 INFO httpx - HTTP Request: POST http://testserver/api/chat "HTTP/1.1 200 OK"
+2026-11-17 19:36:51,340 INFO httpx - HTTP Request: GET http://testserver/api/chat/conversations?kb_id=1 "HTTP/1.1 200 OK"
+2026-11-17 19:36:51,351 INFO httpx - HTTP Request: GET http://testserver/api/chat/conversations/1/messages "HTTP/1.1 200 OK"
+[1/7] 健康检查
+       {'status': 'ok', 'database': 'sqlite', 'embed_provider': 'hashing', 'llm_provider': 'mock'}
+[2/7] 注册
+[3/7] 登录
+[4/7] 创建知识库
+[5/7] 上传文档并入库
+       状态=ready 分块数=1 页数=1
+[6/7] 问答（SSE 流式）
+       引用[1] = 智能家居系统设计说明.md 第1页 余弦相似度=0.1265
+       回答：（离线模拟回答，未调用大模型）根据资料：# 智能家居环境监测系统设计说明 ## 一、总体架构 系统由感知层、网关层、服务层与应用层四部分组成。感知层使用 ESP32 采集温湿度数据，通过 MQTT 协议上报至局域网内的 Mosquitto 
+       耗时：1ms
+[7/7] 会话落库校验
+       会话数=1 消息数=2
+
+全链路通过：注册/登录/建库/上传/入库/混合检索/流式问答/引用落库

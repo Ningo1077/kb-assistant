@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UI 原型 v1.0 · 私有文档知识库问答助手</title>
+<style>
+  :root {
+    --bg: #f6f7fb;
+    --panel: #ffffff;
+    --border: #e5e7ef;
+    --text: #1c2030;
+    --muted: #6b7280;
+    --accent: #4f5bd5;
+    --accent-weak: #eceefc;
+    --danger: #d64545;
+    --ok: #1d9e75;
+    --warn: #b26b0b;
+    --radius: 10px;
+    font-size: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    background: var(--bg); color: var(--text);
+  }
+  button { font: inherit; border: none; border-radius: var(--radius); padding: 8px 14px; cursor: pointer; background: var(--accent); color: #fff; }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  button.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  button.plain { background: transparent; color: var(--muted); padding: 6px 8px; }
+  button.plain:hover { color: var(--danger); }
+  input, textarea, select {
+    font: inherit; padding: 9px 12px; border: 1px solid var(--border);
+    border-radius: var(--radius); outline: none; background: #fff; width: 100%; color: var(--text);
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+
+  /* ── 原型工具条 ───────────────────────────── */
+  .proto-bar {
+    height: 46px; display: flex; align-items: center; gap: 10px;
+    padding: 0 16px; background: #22263a; color: #eef0fb; font-size: 12px;
+  }
+  .proto-bar .tag { font-weight: 700; letter-spacing: .5px; color: #b9c0ff; white-space: nowrap; }
+  .proto-bar .sep { width: 1px; height: 18px; background: #444a66; }
+  .proto-bar button { padding: 5px 10px; font-size: 12px; background: #353b57; border-radius: 7px; }
+  .proto-bar button.active { background: var(--accent); }
+  .proto-bar .spacer { flex: 1; }
+  .proto-bar .hint { color: #9aa2c0; white-space: nowrap; }
+
+  .stage { height: calc(100vh - 46px - 26px); }
+  .proto-foot {
+    height: 26px; display: flex; align-items: center; justify-content: center;
+    gap: 8px; font-size: 11px; color: var(--muted); background: #fff; border-top: 1px solid var(--border);
+  }
+
+  /* ── 登录页 ───────────────────────────────── */
+  .login-wrap { min-height: 100%; display: grid; place-items: center; background: linear-gradient(160deg, #eef0fb 0%, #f6f7fb 60%); }
+  .login-card {
+    width: 360px; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px 28px; display: flex; flex-direction: column; gap: 14px;
+    box-shadow: 0 14px 40px rgba(40,45,90,.08);
+  }
+  .login-card h1 { font-size: 20px; margin: 0; }
+  .login-card .sub { color: var(--muted); font-size: 13px; margin: -6px 0 6px; }
+  .login-card label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 4px; }
+  .login-switch { text-align: center; font-size: 13px; color: var(--muted); }
+  .login-switch a { color: var(--accent); cursor: pointer; }
+  .error-box { background: #fdecec; color: var(--danger); border-radius: var(--radius); padding: 8px 12px; font-size: 13px; }
+
+  /* ── 工作台 ───────────────────────────────── */
+  .layout { display: flex; height: 100%; }
+  .sidebar {
+    width: 250px; background: var(--panel); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; padding: 16px 12px; gap: 8px;
+  }
+  .brand { font-weight: 600; font-size: 15px; padding: 4px 8px 12px; }
+  .kb-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+  .kb-item { text-align: left; background: transparent; color: var(--text); padding: 9px 10px; border-radius: var(--radius); display: block; width: 100%; }
+  .kb-item:hover { background: var(--accent-weak); }
+  .kb-item.active { background: var(--accent-weak); color: var(--accent); font-weight: 600; }
+  .kb-item .desc { display: block; font-size: 12px; color: var(--muted); font-weight: 400; margin-top: 2px; }
+  .kb-item .desc b { color: var(--accent); font-weight: 400; }
+  .sidebar-footer { border-top: 1px solid var(--border); padding-top: 10px; font-size: 13px; color: var(--muted); }
+  .sidebar-footer .row { display: flex; gap: 8px; margin-top: 6px; }
+  .empty-tip { color: var(--muted); text-align: center; padding: 48px 0; font-size: 13px; }
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .main-header { display: flex; align-items: center; gap: 16px; padding: 12px 20px; background: var(--panel); border-bottom: 1px solid var(--border); }
+  .main-header h2 { font-size: 16px; margin: 0; flex: 1; }
+  .tabs { display: flex; gap: 6px; }
+  .tab { background: transparent; color: var(--muted); padding: 6px 14px; border-radius: 999px; }
+  .tab.active { background: var(--accent); color: #fff; }
+  .main-body { flex: 1; overflow: hidden; padding: 16px 20px; display: flex; flex-direction: column; }
+  .kb-empty { flex: 1; display: grid; place-items: center; color: var(--muted); }
+
+  /* 文档面板 */
+  .doc-panel { display: flex; flex-direction: column; gap: 12px; height: 100%; }
+  .doc-toolbar { display: flex; gap: 10px; align-items: center; }
+  .doc-toolbar .hint { color: var(--muted); font-size: 12px; flex: 1; }
+  .doc-table { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); overflow-y: auto; flex: 1; }
+  .doc-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
+  .doc-row:last-child { border-bottom: none; }
+  .doc-row .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .doc-row .meta { color: var(--muted); font-size: 12px; min-width: 78px; }
+  .doc-row .btn-del { min-width: 46px; }
+  .badge { font-size: 12px; padding: 3px 10px; border-radius: 999px; background: var(--accent-weak); color: var(--accent); white-space: nowrap; }
+  .badge.ok { background: #e1f5ee; color: var(--ok); }
+  .badge.warn { background: #faeeda; color: var(--warn); }
+  .badge.err { background: #fcebeb; color: var(--danger); }
+  .doc-error { color: var(--danger); font-size: 12px; display: block; margin-top: 3px; }
+  .doc-panel.drag-over { outline: 2px dashed var(--accent); outline-offset: -6px; background: rgba(79,91,213,.05); }
+
+  /* 聊天面板 */
+  .chat-panel { display: flex; flex-direction: column; height: 100%; gap: 10px; }
+  .chat-history { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 4px 2px; }
+  .msg { max-width: 82%; display: flex; flex-direction: column; }
+  .msg.user { align-self: flex-end; align-items: flex-end; }
+  .msg .bubble { padding: 10px 14px; border-radius: 14px; line-height: 1.65; white-space: pre-wrap; word-break: break-word; }
+  .msg.user .bubble { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
+  .msg.assistant .bubble { background: var(--panel); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+  .msg.assistant .bubble strong { color: var(--accent); }
+  .msg .latency { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .cites { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .cite-chip { font-size: 12px; background: var(--accent-weak); color: var(--accent); border-radius: 8px; padding: 4px 8px; cursor: pointer; border: none; text-align: left; }
+  sup.ref { color: var(--accent); cursor: pointer; font-weight: 600; }
+  .snippet-pop { margin-top: 6px; background: #f6f7fb; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12px; color: var(--muted); white-space: pre-wrap; }
+  .chat-input { display: flex; gap: 10px; }
+  .chat-input textarea { resize: none; height: 46px; }
+  .chat-toolbar { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }
+  .chat-toolbar select { width: 220px; }
+  .stream-dot { color: var(--accent); }
+  .suggest { display: flex; gap: 6px; flex-wrap: wrap; }
+  .suggest button { background: #fff; color: var(--accent); border: 1px solid var(--border); font-size: 12px; padding: 5px 10px; }
+
+  /* 设计标注 */
+  body.annotate [data-note] { position: relative; outline: 2px dashed var(--accent); outline-offset: 2px; }
+  body.annotate [data-note]::after {
+    content: attr(data-note); position: absolute; top: -9px; left: -9px; z-index: 30;
+    width: 19px; height: 19px; border-radius: 50%; background: var(--accent); color: #fff;
+    font-size: 11px; font-weight: 700; display: grid; place-items: center;
+  }
+  .legend {
+    position: fixed; right: 14px; top: 60px; width: 268px; max-height: calc(100vh - 100px);
+    overflow: auto; background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: 0 12px 36px rgba(30,35,70,.16); padding: 14px 16px; font-size: 12px; display: none; z-index: 40;
+  }
+  body.annotate .legend { display: block; }
+  .legend h3 { margin: 0 0 10px; font-size: 13px; }
+  .legend ol { margin: 0; padding-left: 20px; line-height: 1.9; color: var(--muted); }
+  .legend li b { color: var(--text); }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="proto-bar">
+  <span class="tag">UI 原型 v1.0</span>
+  <span class="sep"></span>
+  <button id="nav-login" class="active">P0 登录</button>
+  <button id="nav-docs">P1-a 文档管理</button>
+  <button id="nav-chat">P1-b 智能问答</button>
+  <span class="sep"></span>
+  <button id="btn-annotate">设计标注</button>
+  <button id="btn-reset">重置演示</button>
+  <span class="spacer"></span>
+  <span class="hint">静态原型 · 不发网络请求 · 数据均为虚构演示数据</span>
+</div>
+
+<div class="legend" id="legend">
+  <h3>设计标注 / 交互要点</h3>
+  <ol>
+    <li><b>登录卡片</b>：登录/注册双态，失败在卡内红条提示（I-01/02）</li>
+    <li><b>知识库侧栏</b>：新建、切换、统计计数、删除与退出（I-03/04/13）</li>
+    <li><b>上传与拖拽区</b>：多选上传、拖拽虚线高亮、格式与大小提示（I-05）</li>
+    <li><b>文档状态列</b>：就绪/进行中/失败徽章，失败行内显示原因（I-06/07）</li>
+    <li><b>Tab 切换</b>：文档管理 ⇄ 智能问答，共用当前知识库（I-08）</li>
+    <li><b>流式消息区</b>：meta→delta→done 逐字渲染、生成中禁用发送（I-09）</li>
+    <li><b>引用角标与来源卡</b>：点击展开原文片段浮层（I-10）</li>
+    <li><b>耗时与反馈</b>：done 后出现「有用/无用」，提交后变「已反馈」（I-11）</li>
+    <li><b>会话下拉</b>：切换历史会话还原多轮问答（I-12）</li>
+  </ol>
+  <p style="color:var(--muted);margin:10px 0 0">桌面端 <b>Ctrl+Shift+K</b> 全局唤起、关闭最小化托盘由 Tauri 实现，原型不模拟（I-14）。</p>
+</div>
+
+<div class="stage">
+  <!-- ── P0 登录 ── -->
+  <div id="screen-login" class="login-wrap" style="height:100%">
+    <form class="login-card" id="login-form" data-note="1">
+      <h1>私有知识库问答助手</h1>
+      <p class="sub">文档不出本机 · 回答必须标注出处</p>
+      <div id="login-error" class="error-box hidden">邮箱或密码错误（原型演示：任意邮箱 + 至少 6 位密码即可进入）</div>
+      <div>
+        <label>邮箱</label>
+        <input id="f-email" type="text" value="demo@example.com" placeholder="you@example.com">
+      </div>
+      <div>
+        <label>密码</label>
+        <input id="f-pass" type="password" value="demo123456" placeholder="至少 6 位">
+      </div>
+      <div id="f-nick-wrap" class="hidden">
+        <label>昵称（选填）</label>
+        <input id="f-nick" placeholder="怎么称呼你">
+      </div>
+      <button type="submit" id="f-submit">登录</button>
+      <div class="login-switch" id="login-switch">还没有账号？<a>注册一个</a></div>
+    </form>
+  </div>
+
+  <!-- ── P1 工作台 ── -->
+  <div id="screen-workspace" class="layout hidden">
+    <aside class="sidebar" data-note="2">
+      <div class="brand">📚 私有知识库</div>
+      <button id="btn-new-kb">＋ 新建知识库</button>
+      <div id="kb-create" class="hidden" style="display:flex;gap:6px">
+        <input id="kb-name" placeholder="知识库名称">
+        <button class="ghost" id="kb-confirm" style="white-space:nowrap">确认</button>
+      </div>
+      <div class="kb-list" id="kb-list"></div>
+      <div class="sidebar-footer">
+        <span id="user-label">演示账号</span>
+        <div class="row">
+          <button class="plain" id="btn-del-kb">删除当前库</button>
+          <button class="plain" id="btn-logout">退出</button>
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <div class="main-header">
+        <h2 id="kb-title">结课答辩演示库</h2>
+        <div class="tabs" data-note="5">
+          <button class="tab active" id="tab-docs">文档管理</button>
+          <button class="tab" id="tab-chat">智能问答</button>
+        </div>
+      </div>
+      <div class="main-body">
+        <div id="global-error" class="error-box hidden" style="margin-bottom:10px"></div>
+        <div id="no-kb" class="kb-empty hidden">左侧新建或选择一个知识库开始使用</div>
+
+        <!-- P1-a 文档管理 -->
+        <div id="panel-docs" class="doc-panel" data-note="3">
+          <div class="doc-toolbar">
+            <label style="margin:0">
+              <input type="file" id="file-input" accept=".pdf,.docx,.md,.txt,.csv" multiple style="display:none">
+              <span class="ghost" id="upload-btn" style="display:inline-block;padding:8px 14px;border:1px solid var(--accent);border-radius:10px;color:var(--accent);cursor:pointer">⬆ 选择文件上传</span>
+            </label>
+            <span class="hint">支持 PDF / DOCX / MD / TXT / CSV，单文件 ≤ 20MB；也可直接把文件拖到本面板</span>
+          </div>
+          <div class="doc-table" id="doc-table" data-note="4"></div>
+        </div>
+
+        <!-- P1-b 智能问答 -->
+        <div id="panel-chat" class="chat-panel hidden">
+          <div class="chat-toolbar">
+            <select id="conv-select" data-note="9"><option value="">— 新对话 —</option></select>
+            <button class="plain" id="btn-new-conv">＋ 新对话</button>
+            <span style="flex:1"></span>
+            <span id="stream-dot" class="stream-dot hidden">● 正在生成…</span>
+          </div>
+          <div class="suggest" id="suggest">
+            <button data-q="温度超过多少度会触发告警？">示例：温度告警阈值</button>
+            <button data-q="年假有多少天？">示例：年假天数</button>
+            <button data-q="公司上市了吗？">示例：资料未提及（拒答）</button>
+          </div>
+          <div class="chat-history" id="chat-history" data-note="6"></div>
+          <div class="chat-input">
+            <textarea id="chat-input" placeholder="输入问题，Ctrl+Enter 发送"></textarea>
+            <button id="btn-send" style="min-width:78px">发送</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="proto-foot">
+  <span>高保真可点击原型 · 与 <code>docs/02-UI原型设计说明书.md</code> 配套 · 真实实现见 <code>frontend/src/</code></span>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var DEMO_DOCS = [
+    { name: "云澜科技员工手册.pdf", size: "218 KB", pages: 12, chunks: 18, status: "ready" },
+    { name: "云澜智能音箱X1产品说明书.docx", size: "96 KB", pages: 6, chunks: 9, status: "ready" },
+    { name: "2026年产品路线图.md", size: "8 KB", pages: 1, chunks: 3, status: "ready" },
+    { name: "扫描件-入职登记表.pdf", size: "1.2 MB", pages: 0, chunks: 0, status: "failed",
+      error: "PDF 中未提取到文本（可能是扫描件，需 OCR）" },
+    { name: "智能音箱常见问题FAQ.txt", size: "12 KB", pages: 1, chunks: 2, status: "embedding" }
+  ];
+
+  var KBS = [
+    { id: 1, name: "结课答辩演示库", docs: DEMO_DOCS.slice() },
+    { id: 2, name: "课程复习资料", docs: [
+      { name: "操作系统复习提纲.md", size: "24 KB", pages: 1, chunks: 5, status: "ready" }
+    ] }
+  ];
+
+  var ANSWERS = {
+    "温度超过多少度会触发告警？": {
+      text: "当室内温度连续 **3 个采样点** 超过 **35 摄氏度** 时触发高温告警[1]；当相对湿度低于 **20%** 时触发干燥告警[2]。告警信息通过企业微信机器人推送给管理员，并在大屏上以红色卡片展示[2]。",
+      cites: [
+        { index: 1, filename: "云澜智能音箱X1产品说明书.docx", page: 1,
+          snippet: "当室内温度连续 3 个采样点超过 35 摄氏度时触发高温告警；当相对湿度低于 20% 时触发干燥告警。" },
+        { index: 2, filename: "云澜科技员工手册.pdf", page: 3,
+          snippet: "告警信息通过企业微信机器人推送给管理员，并在大屏上以红色卡片展示。" }
+      ]
+    },
+    "年假有多少天？": {
+      text: "正式员工每年年假为 **15 天**[1]，入职满一年后方可使用；试用期员工不享受年假[1]。",
+      cites: [
+        { index: 1, filename: "云澜科技员工手册.pdf", page: 7,
+          snippet: "正式员工每年享有 15 天年假，入职满一年后开始计发；试用期员工暂不享受年假。" }
+      ]
+    }
+  };
+
+  var state = {
+    screen: "login", tab: "docs", activeKb: 1, mode: "login",
+    conversations: [], currentConv: null, streaming: false, seq: 3
+  };
+
+  function $(id) { return document.getElementById(id); }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function showError(text) {
+    var box = $("global-error");
+    box.textContent = text;
+    box.classList.remove("hidden");
+    setTimeout(function () { box.classList.add("hidden"); }, 4200);
+  }
+
+  // ── 导航 ────────────────────────────────────
+  function setScreen(screen, tab) {
+    state.screen = screen;
+    if (tab) state.tab = tab;
+    $("screen-login").classList.toggle("hidden", screen !== "login");
+    $("screen-workspace").classList.toggle("hidden", screen !== "workspace");
+    $("nav-login").classList.toggle("active", screen === "login");
+    $("nav-docs").classList.toggle("active", screen === "workspace" && state.tab === "docs");
+    $("nav-chat").classList.toggle("active", screen === "workspace" && state.tab === "chat");
+    renderTabs();
+    if (screen === "workspace") { renderKbList(); renderDocs(); renderConvs(); }
+  }
+  function renderTabs() {
+    $("tab-docs").classList.toggle("active", state.tab === "docs");
+    $("tab-chat").classList.toggle("active", state.tab === "chat");
+    $("panel-docs").classList.toggle("hidden", state.tab !== "docs");
+    $("panel-chat").classList.toggle("hidden", state.tab !== "chat");
+  }
+
+  // ── 登录 ────────────────────────────────────
+  $("login-switch").addEventListener("click", function (e) {
+    if (e.target.tagName !== "A") return;
+    state.mode = state.mode === "login" ? "register" : "login";
+    var reg = state.mode === "register";
+    $("f-nick-wrap").classList.toggle("hidden", !reg);
+    $("f-submit").textContent = reg ? "注册并登录" : "登录";
+    $("login-switch").innerHTML = reg ? "已有账号？<a>直接登录</a>" : "还没有账号？<a>注册一个</a>";
+  });
+  $("login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = $("f-email").value.trim();
+    var pass = $("f-pass").value;
+    if (!email || pass.length < 6) { $("login-error").classList.remove("hidden"); return; }
+    $("login-error").classList.add("hidden");
+    $("user-label").textContent = ($("f-nick").value.trim() || email.split("@")[0]);
+    setScreen("workspace", "docs");
+  });
+
+  // ── 知识库 ──────────────────────────────────
+  function activeKb() { return KBS.find(function (k) { return k.id === state.activeKb; }) || null; }
+  function renderKbList() {
+    var box = $("kb-list");
+    box.innerHTML = "";
+    if (!KBS.length) { box.innerHTML = '<div class="empty-tip">还没有知识库，先新建一个</div>'; }
+    KBS.forEach(function (kb) {
+      var chunks = kb.docs.reduce(function (s, d) { return s + d.chunks; }, 0);
+      var b = document.createElement("button");
+      b.className = "kb-item" + (kb.id === state.activeKb ? " active" : "");
+      b.innerHTML = esc(kb.name) + '<span class="desc">文档 <b>' + kb.docs.length +
+        '</b> · 分块 <b>' + chunks + '</b></span>';
+      b.addEventListener("click", function () { state.activeKb = kb.id; renderKbList(); renderDocs(); });
+      box.appendChild(b);
+    });
+    var kb = activeKb();
+    $("kb-title").textContent = kb ? kb.name : "未选择知识库";
+    $("no-kb").classList.toggle("hidden", !!kb);
+    $("panel-docs").classList.toggle("hidden", !kb || state.tab !== "docs");
+    $("panel-chat").classList.toggle("hidden", !kb || state.tab !== "chat");
+  }
+  $("btn-new-kb").addEventListener("click", function () {
+    $("kb-create").classList.remove("hidden"); $("kb-name").focus();
+  });
+  $("kb-confirm").addEventListener("click", createKb);
+  $("kb-name").addEventListener("keydown", function (e) { if (e.key === "Enter") createKb(); });
+  function createKb() {
+    var name = $("kb-name").value.trim();
+    if (!name) return;
+    var kb = { id: ++state.seq, name: name, docs: [] };
+    KBS.unshift(kb); state.activeKb = kb.id; state.tab = "docs";
+    $("kb-name").value = ""; $("kb-create").classList.add("hidden");
+    renderTabs(); renderKbList(); renderDocs();
+  }
+  $("btn-del-kb").addEventListener("click", function () {
+    var kb = activeKb(); if (!kb) return;
+    if (!window.confirm("删除该知识库会同时删除其中全部文档与向量，确定？")) return;
+    KBS = KBS.filter(function (k) { return k.id !== kb.id; });
+    state.activeKb = KBS.length ? KBS[0].id : null;
+    renderKbList(); renderDocs();
+  });
+  $("btn-logout").addEventListener("click", function () { setScreen("login"); });
+
+  // ── 文档面板 ────────────────────────────────
+  var STATUS = {
+    ready: { label: "✅ 就绪", cls: "ok" },
+    pending: { label: "⟳ 等待中", cls: "" },
+    parsing: { label: "⟳ 解析中", cls: "warn" },
+    embedding: { label: "⟳ 向量化中", cls: "warn" },
+    failed: { label: "❌ 失败", cls: "err" }
+  };
+  function renderDocs() {
+    var kb = activeKb(); if (!kb) return;
+    var box = $("doc-table");
+    box.innerHTML = "";
+    if (!kb.docs.length) { box.innerHTML = '<div class="empty-tip">还没有文档，上传后即可开始提问</div>'; return; }
+    kb.docs.forEach(function (d, i) {
+      var s = STATUS[d.status] || STATUS.pending;
+      var row = document.createElement("div");
+      row.className = "doc-row";
+      row.innerHTML =
+        '<span class="name">' + esc(d.name) +
+          (d.status === "failed" ? '<span class="doc-error">' + esc(d.error || "解析失败") + '</span>' : "") +
+        '</span>' +
+        '<span class="meta">' + esc(d.size) + '</span>' +
+        '<span class="meta">' + d.pages + ' 页 · ' + d.chunks + ' 块</span>' +
+        '<span class="badge ' + s.cls + '">' + s.label + '</span>' +
+        '<button class="plain btn-del">删除</button>';
+      row.querySelector(".btn-del").addEventListener("click", function () {
+        if (!window.confirm('删除文档「' + d.name + '」及其全部分块？')) return;
+        kb.docs.splice(i, 1); renderDocs(); renderKbList();
+      });
+      box.appendChild(row);
+    });
+  }
+  function addFiles(files) {
+    var kb = activeKb(); if (!kb || !files.length) return;
+    var okExt = /\.(pdf|docx|md|txt|csv)$/i;
+    var added = 0;
+    Array.prototype.forEach.call(files, function (f) {
+      if (!okExt.test(f.name)) { showError("不支持的文件类型：" + f.name + "（仅支持 PDF / DOCX / MD / TXT / CSV）"); return; }
+      if (f.size > 20 * 1024 * 1024) { showError("文件超过 20MB 限制：" + f.name); return; }
+      if (kb.docs.some(function (d) { return d.name === f.name; })) {
+        showError("秒传命中：内容相同的「" + f.name + "」已存在，直接复用不重复入库"); return;
+      }
+      kb.docs.unshift({ name: f.name, size: sizeText(f.size), pages: 1, chunks: 1, status: "embedding" });
+      added++;
+    });
+    if (added) {
+      renderDocs(); renderKbList();
+      // 模拟后台入库状态机：embedding → ready
+      setTimeout(function () {
+        kb.docs.forEach(function (d) {
+          if (d.status === "embedding") { d.status = "ready"; d.pages = Math.max(1, Math.round(d.chunks)); d.chunks = Math.max(2, d.chunks); }
+        });
+        renderDocs(); renderKbList();
+      }, 1600);
+    }
+  }
+  function sizeText(n) {
+    if (n < 1024) return n + " B";
+    if (n < 1024 * 1024) return (n / 1024).toFixed(1) + " KB";
+    return (n / 1024 / 1024).toFixed(1) + " MB";
+  }
+  $("upload-btn").addEventListener("click", function () { $("file-input").click(); });
+  $("file-input").addEventListener("change", function (e) { addFiles(e.target.files); e.target.value = ""; });
+  var dp = $("panel-docs");
+  dp.addEventListener("dragover", function (e) { e.preventDefault(); dp.classList.add("drag-over"); });
+  dp.addEventListener("dragleave", function () { dp.classList.remove("drag-over"); });
+  dp.addEventListener("drop", function (e) {
+    e.preventDefault(); dp.classList.remove("drag-over");
+    addFiles(e.dataTransfer.files);
+  });
+
+  // ── 聊天面板 ────────────────────────────────
+  function renderConvs() {
+    var sel = $("conv-select");
+    sel.innerHTML = '<option value="">— 新对话 —</option>';
+    state.conversations.forEach(function (c) {
+      var o = document.createElement("option");
+      o.value = c.id; o.textContent = c.title;
+      sel.appendChild(o);
+    });
+    sel.value = state.currentConv || "";
+  }
+  $("conv-select").addEventListener("change", function (e) {
+    state.currentConv = e.target.value ? Number(e.target.value) : null;
+    renderHistory();
+  });
+  $("btn-new-conv").addEventListener("click", function () {
+    state.currentConv = null; renderConvs(); renderHistory();
+  });
+  $("suggest").addEventListener("click", function (e) {
+    if (e.target.tagName !== "BUTTON") return;
+    $("chat-input").value = e.target.getAttribute("data-q"); send();
+  });
+
+  function renderRich(text) {
+    // 原型只解析 **加粗** 与 [n] 角标，与真实 ChatPanel.renderContent 行为一致
+    var out = "";
+    var parts = String(text).split(/(\*\*[^*]+\*\*|\[\d+\])/g);
+    parts.forEach(function (p) {
+      if (/^\*\*[^*]+\*\*$/.test(p)) out += "<strong>" + esc(p.slice(2, -2)) + "</strong>";
+      else if (/^\[\d+\]$/.test(p)) out += '<sup class="ref" data-cite="' + p.slice(1, -1) + '">' + esc(p) + "</sup>";
+      else out += esc(p);
+    });
+    return out;
+  }
+  function findConv() {
+    return state.conversations.find(function (c) { return c.id === state.currentConv; }) || null;
+  }
+  function renderHistory() {
+    var box = $("chat-history");
+    box.innerHTML = "";
+    var conv = findConv();
+    if (!conv || !conv.messages.length) {
+      box.innerHTML = '<div class="empty-tip">向知识库提问，例如：“温度超过多少度会触发告警？”</div>';
+      return;
+    }
+    conv.messages.forEach(function (m, idx) {
+      var wrap = document.createElement("div");
+      wrap.className = "msg " + m.role;
+      var html = '<div class="bubble">' +
+        (m.role === "assistant" ? renderRich(m.content || "…") : esc(m.content)) + "</div>";
+      if (m.role === "assistant" && m.cites && m.cites.length && m.done) {
+        html += '<div class="cites" data-note="7">';
+        m.cites.forEach(function (c) {
+          html += '<button class="cite-chip" data-idx="' + c.index + '">[' + c.index + '] ' +
+            esc(c.filename) + " · 第" + c.page + '页</button>' +
+            '<div class="snippet-pop hidden" data-pop="' + c.index + '">' + esc(c.snippet) + "</div>";
+        });
+        html += "</div>";
+      }
+      if (m.role === "assistant" && m.done) {
+        html += '<div class="latency" data-note="8">耗时 ' + m.latency + "ms · " +
+          (m.voted ? "已反馈" : '<button class="plain vote" data-v="1">有用</button><button class="plain vote" data-v="-1">无用</button>') +
+          "</div>";
+      }
+      wrap.innerHTML = html;
+      // 引用浮层：角标 + 来源卡都可点
+      wrap.querySelectorAll("[data-cite]").forEach(function (el) {
+        el.addEventListener("click", function () { togglePop(wrap, el.getAttribute("data-cite")); });
+      });
+      wrap.querySelectorAll(".cite-chip").forEach(function (el) {
+        el.addEventListener("click", function () { togglePop(wrap, el.getAttribute("data-idx")); });
+      });
+      wrap.querySelectorAll(".vote").forEach(function (el) {
+        el.addEventListener("click", function () { m.voted = true; renderHistory(); });
+      });
+      box.appendChild(wrap);
+      if (idx === conv.messages.length - 1) box.scrollTop = box.scrollHeight;
+    });
+  }
+  function togglePop(wrap, idx) {
+    var pop = wrap.querySelector('[data-pop="' + idx + '"]');
+    if (pop) pop.classList.toggle("hidden");
+  }
+  function send() {
+    var input = $("chat-input");
+    var q = input.value.trim();
+    if (!q || state.streaming || !activeKb()) return;
+    input.value = ""; state.streaming = true;
+    $("stream-dot").classList.remove("hidden"); $("btn-send").disabled = true;
+
+    if (!state.currentConv) {
+      var id = ++state.seq;
+      state.conversations.unshift({ id: id, title: q.slice(0, 24), messages: [] });
+      state.currentConv = id; renderConvs();
+    }
+    var conv = findConv();
+    conv.messages.push({ role: "user", content: q });
+    conv.messages.push({ role: "assistant", content: "", cites: [], done: false, voted: false, latency: 0 });
+    renderHistory();
+
+    var a = ANSWERS[q] || { text: "资料中未提及该信息。", cites: [] };
+    var assistant = conv.messages[conv.messages.length - 1];
+    assistant.cites = a.cites;                       // 模拟 SSE meta 事件
+    var chars = Array.from(a.text);
+    var i = 0;
+    var timer = setInterval(function () {           // 模拟 SSE delta 事件
+      if (i >= chars.length) {
+        clearInterval(timer);
+        assistant.done = true;                      // 模拟 SSE done 事件
+        assistant.latency = 1830;
+        state.streaming = false;
+        $("stream-dot").classList.add("hidden"); $("btn-send").disabled = false;
+        renderHistory();
+        return;
+      }
+      assistant.content += chars.slice(i, i + 3).join("");
+      i += 3;
+      renderHistory();
+    }, 22);
+  }
+  $("btn-send").addEventListener("click", send);
+  $("chat-input").addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); send(); }
+  });
+
+  // ── 顶部工具条 ──────────────────────────────
+  $("nav-login").addEventListener("click", function () { setScreen("login"); });
+  $("nav-docs").addEventListener("click", function () { setScreen("workspace", "docs"); });
+  $("nav-chat").addEventListener("click", function () { setScreen("workspace", "chat"); });
+  $("tab-docs").addEventListener("click", function () { state.tab = "docs"; renderTabs(); renderKbList(); });
+  $("tab-chat").addEventListener("click", function () { state.tab = "chat"; renderTabs(); renderKbList(); renderConvs(); renderHistory(); });
+  $("btn-annotate").addEventListener("click", function () {
+    document.body.classList.toggle("annotate");
+    $("btn-annotate").classList.toggle("active", document.body.classList.contains("annotate"));
+  });
+  $("btn-reset").addEventListener("click", function () { window.location.reload(); });
+
+  // 初始渲染
+  renderKbList(); renderDocs(); renderConvs(); renderHistory();
+})();
+</script>
+</body>
+</html>

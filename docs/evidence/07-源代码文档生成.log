@@ -1,0 +1,7 @@
+[source_to_docx] files=52 lines=6122 code_pages=123 lines_per_page=50 last_page=22 max_line=203
+[source_to_docx] output=docs/word/07-源代码文档.docx bytes=157874
+[check] zip=True files=52 source_lines=6122 docx_lines=6122 code_pages=123
+[check] page_lines min=22 max=50 expected_pages=123 matches_plan=True counts_ok=True
+[check] byte-for-byte identical=True
+[check] estimated max code-page height=526pt / available=748pt fit_on_one_page=True
+CHECK_RESULT=PASS

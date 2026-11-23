@@ -1,0 +1,30 @@
+D:\作品集\AI知识库问答助手\kb-assistant\backend\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+2026-11-17 19:43:16,138 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 200 OK"
+2026-11-17 19:43:16,204 INFO httpx - HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 201 Created"
+2026-11-17 19:43:16,250 INFO httpx - HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 200 OK"
+2026-11-17 19:43:16,266 INFO httpx - HTTP Request: POST http://testserver/api/kbs "HTTP/1.1 201 Created"
+2026-11-17 19:43:16,294 INFO httpx - HTTP Request: POST http://testserver/api/kbs/7/documents "HTTP/1.1 201 Created"
+2026-11-17 19:43:20,199 INFO httpx - HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+2026-11-17 19:43:20,228 INFO app.services.ingest - 入库完成 doc=6 chunks=1
+2026-11-17 19:43:20,238 INFO httpx - HTTP Request: GET http://testserver/api/kbs/7/documents/6 "HTTP/1.1 200 OK"
+2026-11-17 19:43:20,382 INFO httpx - HTTP Request: POST http://127.0.0.1:11434/api/embed "HTTP/1.1 200 OK"
+2026-11-17 19:43:20,392 INFO httpx - HTTP Request: POST http://testserver/api/chat "HTTP/1.1 200 OK"
+2026-11-17 19:43:31,138 INFO httpx - HTTP Request: POST http://127.0.0.1:11434/api/chat "HTTP/1.1 200 OK"
+2026-11-17 19:43:32,039 INFO httpx - HTTP Request: GET http://testserver/api/chat/conversations?kb_id=7 "HTTP/1.1 200 OK"
+2026-11-17 19:43:32,050 INFO httpx - HTTP Request: GET http://testserver/api/chat/conversations/7/messages "HTTP/1.1 200 OK"
+[1/7] 健康检查
+       {'status': 'ok', 'database': 'sqlite', 'embed_provider': 'ollama', 'llm_provider': 'ollama'}
+[2/7] 注册
+[3/7] 登录
+[4/7] 创建知识库
+[5/7] 上传文档并入库
+       状态=ready 分块数=1 页数=1
+[6/7] 问答（SSE 流式）
+       引用[1] = 智能家居系统设计说明.md 第1页 余弦相似度=0.5972
+       回答：**35 摄氏度**[2]。
+       耗时：11622ms
+[7/7] 会话落库校验
+       会话数=1 消息数=2
+
+全链路通过：注册/登录/建库/上传/入库/混合检索/流式问答/引用落库

@@ -21,6 +21,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
+      - name: Unit & API tests (39 cases, isolated temp SQLite)
+        working-directory: backend
+        run: python -m unittest discover -s tests -p "test_*.py" -v
       - name: Smoke test (register / login / upload / chat)
         working-directory: backend
         run: python scripts/smoke_test.py

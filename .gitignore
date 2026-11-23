@@ -69,3 +69,6 @@ desktop.ini
 *.tmp
 .tmp/
 
+# 交付物例外：docs/evidence/ 下的测试与构建证据必须随项目提交
+!docs/evidence/*.log
+

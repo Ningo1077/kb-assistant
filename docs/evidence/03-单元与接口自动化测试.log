@@ -1,0 +1,97 @@
+D:\作品集\AI知识库问答助手\kb-assistant\backend\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+test_01_health (test_all.TestApiFlow.test_01_health) ... 2026-11-17 19:43:06,940 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 200 OK"
+ok
+test_02_register (test_all.TestApiFlow.test_02_register) ... 2026-11-17 19:43:07,009 INFO httpx - HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 201 Created"
+ok
+test_03_duplicate_register_conflict (test_all.TestApiFlow.test_03_duplicate_register_conflict) ... 2026-11-17 19:43:07,015 INFO httpx - HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 409 Conflict"
+ok
+test_04_login_and_me (test_all.TestApiFlow.test_04_login_and_me) ... 2026-11-17 19:43:07,061 INFO httpx - HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 200 OK"
+2026-11-17 19:43:07,067 INFO httpx - HTTP Request: GET http://testserver/api/auth/me "HTTP/1.1 200 OK"
+ok
+test_05_wrong_password (test_all.TestApiFlow.test_05_wrong_password) ... 2026-11-17 19:43:07,114 INFO httpx - HTTP Request: POST http://testserver/api/auth/login "HTTP/1.1 401 Unauthorized"
+ok
+test_06_auth_required (test_all.TestApiFlow.test_06_auth_required) ... 2026-11-17 19:43:07,120 INFO httpx - HTTP Request: GET http://testserver/api/kbs "HTTP/1.1 401 Unauthorized"
+2026-11-17 19:43:07,124 INFO httpx - HTTP Request: GET http://testserver/api/kbs "HTTP/1.1 401 Unauthorized"
+ok
+test_07_input_validation (test_all.TestApiFlow.test_07_input_validation) ... 2026-11-17 19:43:07,128 INFO httpx - HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 422 Unprocessable Entity"
+2026-11-17 19:43:07,131 INFO httpx - HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 422 Unprocessable Entity"
+2026-11-17 19:43:07,135 INFO httpx - HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 422 Unprocessable Entity"
+ok
+test_08_kb_crud (test_all.TestApiFlow.test_08_kb_crud) ... 2026-11-17 19:43:07,150 INFO httpx - HTTP Request: POST http://testserver/api/kbs "HTTP/1.1 201 Created"
+2026-11-17 19:43:07,158 INFO httpx - HTTP Request: GET http://testserver/api/kbs "HTTP/1.1 200 OK"
+2026-11-17 19:43:07,166 INFO httpx - HTTP Request: GET http://testserver/api/kbs/1 "HTTP/1.1 200 OK"
+ok
+test_09_upload_and_ingest (test_all.TestApiFlow.test_09_upload_and_ingest) ... 2026-11-17 19:43:07,189 INFO httpx - HTTP Request: POST http://testserver/api/kbs/1/documents "HTTP/1.1 201 Created"
+2026-11-17 19:43:07,215 INFO app.services.ingest - 入库完成 doc=1 chunks=1
+2026-11-17 19:43:07,222 INFO httpx - HTTP Request: GET http://testserver/api/kbs/1/documents/1 "HTTP/1.1 200 OK"
+ok
+test_10_dedup_upload_returns_same_document (test_all.TestApiFlow.test_10_dedup_upload_returns_same_document) ... 2026-11-17 19:43:07,233 INFO httpx - HTTP Request: POST http://testserver/api/kbs/1/documents "HTTP/1.1 201 Created"
+2026-11-17 19:43:07,240 INFO httpx - HTTP Request: GET http://testserver/api/kbs/1/documents "HTTP/1.1 200 OK"
+ok
+test_11_upload_validation_errors (test_all.TestApiFlow.test_11_upload_validation_errors) ... 2026-11-17 19:43:07,246 INFO httpx - HTTP Request: POST http://testserver/api/kbs/1/documents "HTTP/1.1 400 Bad Request"
+2026-11-17 19:43:07,251 INFO httpx - HTTP Request: POST http://testserver/api/kbs/1/documents "HTTP/1.1 400 Bad Request"
+ok
+test_12_chat_sse_and_persistence (test_all.TestApiFlow.test_12_chat_sse_and_persistence) ... 2026-11-17 19:43:07,282 INFO httpx - HTTP Request: POST http://testserver/api/chat "HTTP/1.1 200 OK"
+ok
+test_13_conversation_history_and_messages (test_all.TestApiFlow.test_13_conversation_history_and_messages) ... 2026-11-17 19:43:07,308 INFO httpx - HTTP Request: GET http://testserver/api/chat/conversations?kb_id=1 "HTTP/1.1 200 OK"
+2026-11-17 19:43:07,331 INFO httpx - HTTP Request: GET http://testserver/api/chat/conversations/1/messages "HTTP/1.1 200 OK"
+ok
+test_14_multi_turn_reuses_conversation (test_all.TestApiFlow.test_14_multi_turn_reuses_conversation) ... 2026-11-17 19:43:07,346 INFO httpx - HTTP Request: POST http://testserver/api/chat "HTTP/1.1 200 OK"
+2026-11-17 19:43:07,364 INFO httpx - HTTP Request: GET http://testserver/api/chat/conversations/1/messages "HTTP/1.1 200 OK"
+ok
+test_15_feedback_and_validation (test_all.TestApiFlow.test_15_feedback_and_validation) ... 2026-11-17 19:43:07,377 INFO httpx - HTTP Request: POST http://testserver/api/chat/feedback "HTTP/1.1 201 Created"
+2026-11-17 19:43:07,382 INFO httpx - HTTP Request: POST http://testserver/api/chat/feedback "HTTP/1.1 422 Unprocessable Entity"
+2026-11-17 19:43:07,387 INFO httpx - HTTP Request: POST http://testserver/api/chat/feedback "HTTP/1.1 404 Not Found"
+ok
+test_16_reindex_and_delete_document (test_all.TestApiFlow.test_16_reindex_and_delete_document) ... 2026-11-17 19:43:07,400 INFO httpx - HTTP Request: POST http://testserver/api/kbs/1/documents/1/reindex "HTTP/1.1 200 OK"
+2026-11-17 19:43:07,424 INFO app.services.ingest - 入库完成 doc=1 chunks=1
+2026-11-17 19:43:07,430 INFO httpx - HTTP Request: GET http://testserver/api/kbs/1/documents/1 "HTTP/1.1 200 OK"
+2026-11-17 19:43:07,447 INFO httpx - HTTP Request: DELETE http://testserver/api/kbs/1/documents/1 "HTTP/1.1 204 No Content"
+ok
+2026-11-17 19:43:07,505 INFO httpx - HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 201 Created"
+2026-11-17 19:43:07,559 INFO httpx - HTTP Request: POST http://testserver/api/auth/register "HTTP/1.1 201 Created"
+2026-11-17 19:43:07,574 INFO httpx - HTTP Request: POST http://testserver/api/kbs "HTTP/1.1 201 Created"
+2026-11-17 19:43:07,592 INFO httpx - HTTP Request: POST http://testserver/api/kbs/2/documents "HTTP/1.1 201 Created"
+2026-11-17 19:43:07,615 INFO app.services.ingest - 入库完成 doc=1 chunks=1
+2026-11-17 19:43:07,636 INFO httpx - HTTP Request: POST http://testserver/api/chat "HTTP/1.1 200 OK"
+test_01_other_users_kb_is_404 (test_all.TestAuthorization.test_01_other_users_kb_is_404) ... 2026-11-17 19:43:07,653 INFO httpx - HTTP Request: GET http://testserver/api/kbs/2 "HTTP/1.1 404 Not Found"
+2026-11-17 19:43:07,658 INFO httpx - HTTP Request: DELETE http://testserver/api/kbs/2 "HTTP/1.1 404 Not Found"
+2026-11-17 19:43:07,663 INFO httpx - HTTP Request: GET http://testserver/api/kbs "HTTP/1.1 200 OK"
+ok
+test_02_other_users_documents_are_hidden (test_all.TestAuthorization.test_02_other_users_documents_are_hidden) ... 2026-11-17 19:43:07,668 INFO httpx - HTTP Request: GET http://testserver/api/kbs/2/documents "HTTP/1.1 404 Not Found"
+2026-11-17 19:43:07,673 INFO httpx - HTTP Request: DELETE http://testserver/api/kbs/2/documents/1 "HTTP/1.1 404 Not Found"
+ok
+test_03_chat_cannot_target_others_kb (test_all.TestAuthorization.test_03_chat_cannot_target_others_kb) ... 2026-11-17 19:43:07,678 INFO httpx - HTTP Request: POST http://testserver/api/chat "HTTP/1.1 404 Not Found"
+2026-11-17 19:43:07,682 INFO httpx - HTTP Request: GET http://testserver/api/chat/conversations?kb_id=2 "HTTP/1.1 404 Not Found"
+ok
+test_04_other_users_conversation_is_404 (test_all.TestAuthorization.test_04_other_users_conversation_is_404) ... 2026-11-17 19:43:07,688 INFO httpx - HTTP Request: GET http://testserver/api/chat/conversations/2/messages "HTTP/1.1 404 Not Found"
+2026-11-17 19:43:07,694 INFO httpx - HTTP Request: DELETE http://testserver/api/chat/conversations/2 "HTTP/1.1 404 Not Found"
+ok
+test_05_cross_kb_conversation_is_rejected (test_all.TestAuthorization.test_05_cross_kb_conversation_is_rejected) ... 2026-11-17 19:43:07,705 INFO httpx - HTTP Request: POST http://testserver/api/kbs "HTTP/1.1 201 Created"
+2026-11-17 19:43:07,711 INFO httpx - HTTP Request: POST http://testserver/api/chat "HTTP/1.1 404 Not Found"
+ok
+2026-11-17 19:43:07,727 INFO httpx - HTTP Request: DELETE http://testserver/api/kbs/2 "HTTP/1.1 204 No Content"
+test_01_hash_embedding_dim_and_normalization (test_all.TestEmbeddingAndRetrieval.test_01_hash_embedding_dim_and_normalization) ... ok
+test_02_hash_embedding_is_deterministic (test_all.TestEmbeddingAndRetrieval.test_02_hash_embedding_is_deterministic) ... ok
+test_03_embed_texts_batches_over_16_items (test_all.TestEmbeddingAndRetrieval.test_03_embed_texts_batches_over_16_items) ... ok
+test_04_terms_extracts_cjk_bigrams_and_latin_words (test_all.TestEmbeddingAndRetrieval.test_04_terms_extracts_cjk_bigrams_and_latin_words) ... ok
+test_05_rrf_fusion_merges_two_recall_channels (test_all.TestEmbeddingAndRetrieval.test_05_rrf_fusion_merges_two_recall_channels) ... ok
+test_06_prompt_contains_grounding_and_refusal_rules (test_all.TestEmbeddingAndRetrieval.test_06_prompt_contains_grounding_and_refusal_rules) ... ok
+test_07_mock_llm_refuses_when_no_context (test_all.TestEmbeddingAndRetrieval.test_07_mock_llm_refuses_when_no_context) ... ok
+test_01_password_hash_is_salted_and_not_plaintext (test_all.TestSecurity.test_01_password_hash_is_salted_and_not_plaintext) ... ok
+test_02_verify_password_handles_wrong_and_malformed (test_all.TestSecurity.test_02_verify_password_handles_wrong_and_malformed) ... ok
+test_03_jwt_roundtrip_and_tamper_detection (test_all.TestSecurity.test_03_jwt_roundtrip_and_tamper_detection) ... ok
+test_04_validate_upload_rules (test_all.TestSecurity.test_04_validate_upload_rules) ... ok
+test_05_sha256_is_stable (test_all.TestSecurity.test_05_sha256_is_stable) ... ok
+test_01_clean_text_removes_isolated_page_number (test_all.TestTextService.test_01_clean_text_removes_isolated_page_number) ... ok
+test_02_clean_text_removes_page_footer (test_all.TestTextService.test_02_clean_text_removes_page_footer) ... ok
+test_03_clean_text_merges_pdf_hard_wrap (test_all.TestTextService.test_03_clean_text_merges_pdf_hard_wrap) ... ok
+test_04_parse_document_rejects_unsupported_type (test_all.TestTextService.test_04_parse_document_rejects_unsupported_type) ... ok
+test_05_parse_markdown_keeps_page_one (test_all.TestTextService.test_05_parse_markdown_keeps_page_one) ... ok
+test_06_chunk_segments_has_continuous_index_and_overlap (test_all.TestTextService.test_06_chunk_segments_has_continuous_index_and_overlap) ... ok
+
+----------------------------------------------------------------------
+Ran 39 tests in 1.221s
+
+OK
