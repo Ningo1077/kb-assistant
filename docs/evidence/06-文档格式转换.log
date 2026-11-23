@@ -1,28 +1,26 @@
 [md_to_docx] root=D:\作品集\AI知识库问答助手\kb-assistant
 [md_to_docx] output=D:\作品集\AI知识库问答助手\kb-assistant\docs\word
-[md_to_docx] files=11
-  OK  docs/00-交付物清单与全过程索引.md -> docs/word/00-交付物清单与全过程索引.docx  [ headings=16 tables=12 code_blocks=2 paragraphs=8 links=0 bytes=54477 ]
+[md_to_docx] files=10
+  OK  docs/00-交付物清单与全过程索引.md -> docs/word/00-交付物清单与全过程索引.docx  [ headings=16 tables=12 code_blocks=2 paragraphs=8 links=0 bytes=54163 ]
   OK  docs/01-系统概要与详细设计说明书.md -> docs/word/01-系统概要与详细设计说明书.docx  [ headings=20 tables=8 code_blocks=6 paragraphs=5 links=0 bytes=52675 ]
   OK  docs/02-UI原型设计说明书.md -> docs/word/02-UI原型设计说明书.docx  [ headings=11 tables=5 code_blocks=4 paragraphs=4 links=0 bytes=46688 ]
-  OK  docs/03-测试报告.md -> docs/word/03-测试报告.docx  [ headings=14 tables=9 code_blocks=4 paragraphs=9 links=0 bytes=51135 ]
-  OK  docs/04-部署手册.md -> docs/word/04-部署手册.docx  [ headings=20 tables=6 code_blocks=11 paragraphs=18 links=0 bytes=50613 ]
+  OK  docs/03-测试报告.md -> docs/word/03-测试报告.docx  [ headings=14 tables=9 code_blocks=4 paragraphs=9 links=0 bytes=51155 ]
+  OK  docs/04-部署手册.md -> docs/word/04-部署手册.docx  [ headings=20 tables=6 code_blocks=11 paragraphs=18 links=0 bytes=50604 ]
   OK  docs/05-使用说明书.md -> docs/word/05-使用说明书.docx  [ headings=17 tables=8 code_blocks=2 paragraphs=8 links=0 bytes=45799 ]
-  OK  docs/技术选型与需求分析.md -> docs/word/技术选型与需求分析.docx  [ headings=19 tables=9 code_blocks=2 paragraphs=15 links=0 bytes=47166 ]
-  OK  docs/技术选型与需求分析-精简版.md -> docs/word/技术选型与需求分析-精简版.docx  [ headings=19 tables=9 code_blocks=2 paragraphs=15 links=0 bytes=45262 ]
-  OK  docs/作业要求对照-技术选型与需求分析填写稿.md -> docs/word/作业要求对照-技术选型与需求分析填写稿.docx  [ headings=5 tables=1 code_blocks=0 paragraphs=5 links=0 bytes=41938 ]
-  OK  README.md -> docs/word/README-项目总览.docx  [ headings=13 tables=3 code_blocks=6 paragraphs=27 links=39 bytes=48580 ]
+  OK  docs/技术选型与需求分析.md -> docs/word/技术选型与需求分析.docx  [ headings=19 tables=9 code_blocks=2 paragraphs=15 links=0 bytes=47127 ]
+  OK  docs/技术选型与需求分析-精简版.md -> docs/word/技术选型与需求分析-精简版.docx  [ headings=19 tables=9 code_blocks=2 paragraphs=15 links=0 bytes=45226 ]
+  OK  README.md -> docs/word/README-项目总览.docx  [ headings=13 tables=3 code_blocks=6 paragraphs=27 links=37 bytes=48450 ]
   OK  backend/README.md -> docs/word/README-后端说明.docx  [ headings=8 tables=1 code_blocks=5 paragraphs=13 links=0 bytes=43720 ]
-[md_to_docx] converted=11
+[md_to_docx] converted=10
 [md_to_docx] verifying ...
-  OK  00-交付物清单与全过程索引.docx: paragraphs=78 tables=13 body_lines=52 missing[head=0, cell=0, body=0] bytes=54477
+  OK  00-交付物清单与全过程索引.docx: paragraphs=78 tables=13 body_lines=52 missing[head=0, cell=0, body=0] bytes=54163
   OK  01-系统概要与详细设计说明书.docx: paragraphs=77 tables=9 body_lines=157 missing[head=0, cell=0, body=0] bytes=52675
   OK  02-UI原型设计说明书.docx: paragraphs=61 tables=6 body_lines=95 missing[head=0, cell=0, body=0] bytes=46688
-  OK  03-测试报告.docx: paragraphs=77 tables=10 body_lines=43 missing[head=0, cell=0, body=0] bytes=51135
-  OK  04-部署手册.docx: paragraphs=129 tables=7 body_lines=94 missing[head=0, cell=0, body=0] bytes=50613
+  OK  03-测试报告.docx: paragraphs=77 tables=10 body_lines=43 missing[head=0, cell=0, body=0] bytes=51155
+  OK  04-部署手册.docx: paragraphs=129 tables=7 body_lines=94 missing[head=0, cell=0, body=0] bytes=50604
   OK  05-使用说明书.docx: paragraphs=84 tables=9 body_lines=37 missing[head=0, cell=0, body=0] bytes=45799
-  OK  技术选型与需求分析.docx: paragraphs=101 tables=10 body_lines=63 missing[head=0, cell=0, body=0] bytes=47166
-  OK  技术选型与需求分析-精简版.docx: paragraphs=82 tables=10 body_lines=47 missing[head=0, cell=0, body=0] bytes=45262
-  OK  作业要求对照-技术选型与需求分析填写稿.docx: paragraphs=59 tables=2 body_lines=30 missing[head=0, cell=0, body=0] bytes=41938
-  OK  README-项目总览.docx: paragraphs=126 tables=4 body_lines=123 missing[head=0, cell=0, body=0] bytes=48580
+  OK  技术选型与需求分析.docx: paragraphs=101 tables=10 body_lines=63 missing[head=0, cell=0, body=0] bytes=47127
+  OK  技术选型与需求分析-精简版.docx: paragraphs=82 tables=10 body_lines=47 missing[head=0, cell=0, body=0] bytes=45226
+  OK  README-项目总览.docx: paragraphs=126 tables=4 body_lines=123 missing[head=0, cell=0, body=0] bytes=48450
   OK  README-后端说明.docx: paragraphs=70 tables=2 body_lines=83 missing[head=0, cell=0, body=0] bytes=43720
 CONVERT_RESULT=PASS

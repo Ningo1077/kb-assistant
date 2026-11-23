@@ -76,7 +76,7 @@ cd frontend && npm run build
 `docs/word/*.docx` 是**生成物**，不要手改 docx：
 
 ```bash
-# 改完 md 后重新生成 11 份 docx，并回读校验（标题/表格/代码块/正文逐行覆盖）
+# 改完 md 后重新生成 10 份 docx，并回读校验（标题/表格/代码块/正文逐行覆盖）
 backend/.venv/Scripts/python.exe scripts/md_to_docx.py
 backend/.venv/Scripts/python.exe scripts/md_to_docx.py --check
 
@@ -87,7 +87,7 @@ backend/.venv/Scripts/python.exe scripts/source_to_docx.py --check
 
 两条命令都以 `CHECK_RESULT=PASS` / `CONVERT_RESULT=PASS` 收尾才算通过。
 新增**手写源码/配置**文件时，记得把它加进 `scripts/source_to_docx.py` 的 `GROUPS`，
-并同步 README 中的「N 个文件 / M 行」口径（当前 52 个文件 / 6121 行）。
+并同步 README 中的「N 个文件 / M 行」口径（当前 52 个文件 / 6120 行）。
 
 ## 6. 提交与分支
 

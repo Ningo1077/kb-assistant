@@ -26,8 +26,8 @@
 - 桌面端：Tauri v2 客户端，启动自动拉起内置后端、托盘常驻、`Ctrl+Shift+K` 全局唤起、文件拖入上传。
 - 打包：NSIS 安装包（内置后端 venv + 空白 SQLite），卸载时按需备份知识库数据。
 - 测试：39 个单元与接口自动化用例（`backend/tests/test_all.py`），临时隔离数据库。
-- CI：GitHub Actions 双作业（后端测试 / 冒烟 / 种子库生成 + 前端类型检查与构建）。
-- 交付文档：12 份 Word 文档（需求分析、设计说明书、UI 原型、测试报告、部署手册、使用说明书、源代码文档），
+- CI：GitHub Actions 两个 job（后端测试 / 冒烟 / 种子库生成 + 前端类型检查与构建）。
+- 交付文档：11 份 Word 文档（需求分析、设计说明书、UI 原型、测试报告、部署手册、使用说明书、源代码文档），
   由 `scripts/md_to_docx.py` / `scripts/source_to_docx.py` 生成并回读校验。
 
 ### Security
