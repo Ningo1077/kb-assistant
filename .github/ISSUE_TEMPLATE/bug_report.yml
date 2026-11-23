@@ -1,0 +1,75 @@
+name: Bug 报告
+description: 报告可复现的功能异常、崩溃或结果不正确
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。提交前请先搜索已有 issue，并确认版本是最新的 `main`。
+
+        > 请勿粘贴真实文档内容、他人 JWT/Cookie、`.env` 中的密钥或数据库文件。
+        > 安全问题请走 [SECURITY.md](https://github.com/Ningo1077/kb-assistant/blob/main/SECURITY.md) 的私密报告通道。
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 现象与期望
+      description: 发生了什么？你期望发生什么？是否稳定复现？
+      placeholder: 上传 PDF 后状态一直停在 parsing，期望 3 秒内变成 ready。
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 尽量给出最小可复现路径（接口级更好）
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: form-factor
+    attributes:
+      label: 运行形态
+      options:
+        - Web 端（后端 uvicorn + 前端 npm run dev）
+        - Tauri 桌面客户端（NSIS 安装包）
+        - 只调用后端 API
+        - 其它
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 版本 / 提交
+      description: 安装包版本（如 1.0.0）或 `git rev-parse --short HEAD` 的结果
+      placeholder: 1.0.0 / ac79ce1
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 环境
+      value: |
+        - 操作系统:
+        - Python / Node 版本:
+        - 数据库: SQLite / PostgreSQL 16 + pgvector
+        - EMBED_PROVIDER / LLM_PROVIDER:
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志 / 截图
+      description: 后端 traceback、浏览器控制台、`GET /health` 的返回
+      render: shell
+    validations:
+      required: false

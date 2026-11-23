@@ -1,0 +1,42 @@
+# ============================================================
+# 换行规范与二进制识别（Windows 开发 + 跨平台协作）
+# 目的：避免 core.autocrlf 造成的整文件 diff，保证 clone 后开箱可用
+# ============================================================
+
+# 默认：Git 自动识别文本，仓库内统一 LF
+* text=auto eol=lf
+
+# Windows 脚本必须保持 CRLF（cmd.exe / PowerShell / NSIS 对 LF 敏感）
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.ps1   text eol=crlf
+*.nsi   text eol=crlf
+*.nsh   text eol=crlf
+
+# 二进制文件：禁止任何换行与文本转换
+*.png   binary
+*.ico   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.pdf   binary
+*.docx  binary
+*.xlsx  binary
+*.pptx  binary
+*.zip   binary
+*.gz    binary
+*.exe   binary
+*.dll   binary
+*.lib   binary
+*.pdb   binary
+
+# ============================================================
+# GitHub 语言统计口径：生成物与交付文档不计入手写代码行数
+# ============================================================
+frontend/package-lock.json   linguist-generated=true
+src-tauri/Cargo.lock         linguist-generated=true
+*.docx                       linguist-generated=true linguist-documentation=true
+docs/**                      linguist-documentation=true
+demo-files/**                linguist-documentation=true
+docs/prototype/index.html    linguist-documentation=true

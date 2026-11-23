@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 使用问题与部署排障
+    url: https://github.com/Ningo1077/kb-assistant/blob/main/docs/05-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E%E4%B9%A6.md
+    about: 先看《使用说明书》与《部署手册》的 FAQ / 排障章节
+  - name: 安全漏洞（私密）
+    url: https://github.com/Ningo1077/kb-assistant/security/advisories/new
+    about: 请不要开公开 issue，改走私密安全报告
+  - name: 贡献与本地开发
+    url: https://github.com/Ningo1077/kb-assistant/blob/main/CONTRIBUTING.md
+    about: 环境准备、测试命令、文档生成与 PR 检查清单
