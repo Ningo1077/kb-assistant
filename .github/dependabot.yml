@@ -1,47 +1,68 @@
 version: 2
 
+# 收紧策略：只收 patch / minor，主版本升级（vite 6→8、actions/checkout 4→7 之类）
+# 一律不自动提 PR，需要时手动评估——它们会打破现有构建，且本项目对依赖版本有明确要求。
 updates:
-  # 后端 Python 依赖
+  # 后端 Python 依赖：月更，一次最多 1 个 PR（分组仍合并 minor/patch）
   - package-ecosystem: pip
     directory: /backend
     schedule:
-      interval: weekly
-      day: monday
-    open-pull-requests-limit: 5
+      interval: monthly
+    open-pull-requests-limit: 1
     commit-message:
       prefix: "chore(deps)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      python-minor:
+      backend-deps:
         patterns: ["*"]
         update-types: ["minor", "patch"]
 
-  # 前端 npm 依赖
+  # 前端 npm 依赖：月更，一次最多 1 个 PR
   - package-ecosystem: npm
     directory: /frontend
     schedule:
-      interval: weekly
-      day: monday
-    open-pull-requests-limit: 5
+      interval: monthly
+    open-pull-requests-limit: 1
     commit-message:
       prefix: "chore(deps)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
-      frontend-minor:
+      frontend-deps:
         patterns: ["*"]
         update-types: ["minor", "patch"]
 
-  # 桌面端 Rust 依赖（Tauri 生态更新频繁，按月看）
+  # 桌面端 Rust 依赖：月更，一次最多 1 个 PR（Tauri 生态主版本变动需人工验证打包）
   - package-ecosystem: cargo
     directory: /src-tauri
     schedule:
       interval: monthly
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 1
     commit-message:
       prefix: "chore(deps)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      rust-deps:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
 
-  # GitHub Actions 版本
+  # GitHub Actions：月更，一次最多 1 个 PR，且不跨主版本（v4 → v7 这类需人工确认）
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
+    open-pull-requests-limit: 1
     commit-message:
       prefix: "chore(ci)"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      actions-deps:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
